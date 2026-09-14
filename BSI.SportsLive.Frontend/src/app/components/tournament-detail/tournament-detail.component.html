@@ -1,0 +1,131 @@
+<div class="tournament-detail-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand" routerLink="/dashboard" style="cursor: pointer;">
+      <span class="brand-logo">🏆</span> BSI Sports
+    </div>
+    <ul class="sidebar-menu">
+      <li class="active"><a routerLink="./"><span class="icon">📊</span> Overview</a></li>
+      <li><a routerLink="./teams"><span class="icon">👥</span> Teams</a></li>
+      <li><a routerLink="./matches"><span class="icon">⏱️</span> Matches</a></li>
+    </ul>
+    <div class="sidebar-section-title">ADMIN</div>
+    <ul class="sidebar-menu">
+      <li><a routerLink="./tv"><span class="icon">📺</span> TV</a></li>
+      <li><a routerLink="./registrations"><span class="icon">📝</span> Registrations</a></li>
+      <li><a routerLink="./scheduler"><span class="icon">📅</span> Scheduler</a></li>
+      <li><a routerLink="./access"><span class="icon">🔑</span> Access</a></li>
+      <li><a routerLink="./settings"><span class="icon">⚙️</span> Settings</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <div *ngIf="isLoading" class="loading-state">Loading tournament...</div>
+    <div *ngIf="errorMessage" class="error-state">{{ errorMessage }}</div>
+
+    <div *ngIf="!isLoading && tournament" class="content-container">
+      
+      <!-- Top Title Section -->
+      <div class="top-title-section">
+        <div class="title-row">
+          <span class="trophy-icon">🏆</span>
+          <h1>{{ tournament.name }}</h1>
+          <button class="icon-edit-btn" title="Edit Name">✎</button>
+        </div>
+        <p class="subtitle">Want to come back later? Log in to save your tournament now, or it will be deleted in 24 hours.</p>
+      </div>
+
+      <!-- Getting Started Banner -->
+      <div class="getting-started-banner">
+        <div class="banner-header">
+          <div class="banner-title-group">
+            <span class="rocket-icon">🚀</span>
+            <strong>Getting started</strong>
+          </div>
+          <span class="close-banner">&times;</span>
+        </div>
+        <p class="banner-desc">Here are a few things most organizers do next:</p>
+        <ul class="steps-list">
+          <li>
+            <div class="step-info">
+              <span class="step-badge">1</span>
+              <span class="step-text">👥 Rename your teams</span>
+            </div>
+            <span class="arrow">&gt;</span>
+          </li>
+          <li>
+            <div class="step-info">
+              <span class="step-badge">2</span>
+              <span class="step-text">📅 Enter your first result</span>
+            </div>
+            <span class="arrow">&gt;</span>
+          </li>
+          <li>
+            <div class="step-info">
+              <span class="step-badge">3</span>
+              <span class="step-text">🔗 Share your tournament</span>
+            </div>
+            <span class="arrow">&gt;</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Two Column Grid (Details & Settings) -->
+      <div class="grid-section">
+        <!-- Details Card -->
+        <div class="card">
+          <div class="card-header-bar">
+            <h3>Details</h3>
+            <button class="edit-pill">✎ Edit</button>
+          </div>
+          <div class="card-body-rows">
+            <div class="row-item">
+              <span class="label">Sport</span>
+              <span class="value">{{ tournament.sport }}</span>
+            </div>
+            <div class="row-item">
+              <span class="label">Description</span>
+              <span class="value link-style">Add a description</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tournament Settings Card -->
+        <div class="card">
+          <div class="card-header-bar">
+            <h3>Tournament Settings</h3>
+            <button class="edit-pill">✎ Edit</button>
+          </div>
+          <div class="card-body-rows">
+            <div class="row-item">
+              <span class="label">First Round</span>
+              <span class="value">Seeded</span>
+            </div>
+            <div class="row-item">
+              <span class="label">Number of Legs</span>
+              <span class="value">1</span>
+            </div>
+            <div class="row-item">
+              <span class="label">Placements</span>
+              <span class="value">Only 1st/2nd place final</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contacts Section -->
+      <div class="contacts-section">
+        <div class="card-header-bar">
+          <h3>Contacts</h3>
+          <button class="edit-pill">✎ Edit</button>
+        </div>
+        <div class="contacts-body">
+          <p class="no-contacts">No contacts available</p>
+          <p class="contacts-hint">Add contact info so participants can reach you</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>

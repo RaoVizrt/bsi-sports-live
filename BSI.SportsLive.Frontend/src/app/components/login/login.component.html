@@ -1,0 +1,60 @@
+<div class="login-container">
+  <div class="login-card">
+    <h1 class="login-title">Login</h1>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error-alert">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Username Field -->
+      <div class="form-group">
+        <label for="username" class="form-label">Username or Email</label>
+        <input
+          type="text"
+          id="username"
+          formControlName="username"
+          class="form-input"
+          placeholder="Enter your username or email"
+          [class.is-invalid]="username && username.invalid && username.touched"
+        />
+        <div *ngIf="username && username.invalid && username.touched" class="error-text">
+          <span *ngIf="username.errors?.['required']">Username is required</span>
+          <span *ngIf="username.errors?.['minlength']">Username must be at least 3 characters</span>
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-input"
+          placeholder="Enter your password"
+          [class.is-invalid]="password && password.invalid && password.touched"
+        />
+        <div *ngIf="password && password.invalid && password.touched" class="error-text">
+          <span *ngIf="password.errors?.['required']">Password is required</span>
+          <span *ngIf="password.errors?.['minlength']">Password must be at least 6 characters</span>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="login-button" [disabled]="loginForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Sign In</span>
+        <span *ngIf="isLoading" class="spinner">Loading...</span>
+      </button>
+    </form>
+
+    <!-- Additional Links -->
+    <div class="login-footer">
+      <a href="#" class="footer-link">Forgot Password?</a>
+      <span class="divider">•</span>
+      <a href="#" class="footer-link">Sign Up</a>
+    </div>
+  </div>
+</div>

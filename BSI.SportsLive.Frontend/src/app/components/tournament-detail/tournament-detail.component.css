@@ -1,0 +1,316 @@
+.tournament-detail-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #141715;
+  color: #e2e8f0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 240px;
+  background-color: #1a1d1b;
+  border-right: 1px solid #232724;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-brand {
+  padding: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #22c55e;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #232724;
+}
+
+.sidebar-section-title {
+  padding: 20px 20px 8px 20px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #71717a;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.sidebar-menu li.active a, .sidebar-menu li a:hover {
+  background-color: #222624;
+  color: #ffffff;
+  border-left: 3px solid #22c55e;
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  padding: 40px 60px;
+  overflow-y: auto;
+}
+
+.content-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Top Title Section */
+.top-title-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.trophy-icon {
+  font-size: 24px;
+  background: #1e293b;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.top-title-section h1 {
+  font-size: 26px;
+  color: #22c55e;
+  margin: 0;
+  font-weight: 600;
+}
+
+.icon-edit-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.subtitle {
+  color: #94a3b8;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Getting Started Banner */
+.getting-started-banner {
+  background-color: #1a231e;
+  border: 1px solid #166534;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.banner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.banner-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #22c55e;
+  font-size: 16px;
+}
+
+.close-banner {
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.banner-desc {
+  color: #cbd5e1;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.steps-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.steps-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #141f18;
+  padding: 12px 16px;
+  border-radius: 6px;
+  border: 1px solid #1e3a29;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.steps-list li:hover {
+  background-color: #1c2e22;
+}
+
+.step-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.step-badge {
+  background-color: #166534;
+  color: #86efac;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.step-text {
+  color: #e2e8f0;
+  font-size: 14px;
+}
+
+.arrow {
+  color: #64748b;
+  font-weight: bold;
+}
+
+/* Grid Section (Details & Settings) */
+.grid-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.card, .contacts-section {
+  background-color: #1a1d1b;
+  border: 1px solid #232724;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.card-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #232724;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.card-header-bar h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.edit-pill {
+  background-color: #232724;
+  border: none;
+  color: #cbd5e1;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.edit-pill:hover {
+  background-color: #2e3330;
+  color: #ffffff;
+}
+
+.card-body-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+.row-item .label {
+  color: #94a3b8;
+}
+
+.row-item .value {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.link-style {
+  color: #86efac;
+  cursor: pointer;
+}
+
+/* Contacts Section */
+.contacts-section {
+  margin-bottom: 40px;
+}
+
+.contacts-body {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.no-contacts {
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 0 0 6px 0;
+}
+
+.contacts-hint {
+  color: #64748b;
+  font-size: 12px;
+  margin: 0;
+}
+.sidebar-brand {
+  padding: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #22c55e;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #232724;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.sidebar-brand:hover {
+  background-color: #222624;
+}

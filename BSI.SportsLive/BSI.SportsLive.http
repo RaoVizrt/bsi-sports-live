@@ -1,0 +1,6 @@
+@BSI.SportsLive_HostAddress = http://localhost:5258
+
+GET {{BSI.SportsLive_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

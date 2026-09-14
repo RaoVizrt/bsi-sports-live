@@ -1,0 +1,20 @@
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #232627 !important;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+app-root {
+  display: block;
+  min-height: 100vh;
+  background-color: #232627 !important;
+}/* You can add global styles to this file, and also import other style files */
