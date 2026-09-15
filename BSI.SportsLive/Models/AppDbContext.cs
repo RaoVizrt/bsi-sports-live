@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using BSI.SportsLive.Models;
 
 namespace BSI.SportsLive.Models
 {
@@ -17,6 +18,7 @@ namespace BSI.SportsLive.Models
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<TeamSquad> TeamSquads { get; set; }
         public DbSet<MatchPlayingXI> MatchPlayingXIs { get; set; }
+        public DbSet<TeamPlayer> TeamPlayers { get; set; } // Global Player Pool Junction Table
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -63,7 +65,7 @@ namespace BSI.SportsLive.Models
                 entity.HasKey(x => new { x.MatchId, x.TeamId, x.PlayerId });
 
                 entity.HasOne(x => x.Match)
-                    .WithMany() // change to WithMany(m => m.MatchPlayingXIs) if collection exists
+                    .WithMany()
                     .HasForeignKey(x => x.MatchId)
                     .OnDelete(DeleteBehavior.Cascade);
 
@@ -84,7 +86,7 @@ namespace BSI.SportsLive.Models
                 entity.HasKey(x => new { x.TournamentId, x.TeamId, x.PlayerId });
 
                 entity.HasOne(x => x.Tournament)
-                    .WithMany() // change to WithMany(t => t.TeamSquads) if collection exists
+                    .WithMany()
                     .HasForeignKey(x => x.TournamentId)
                     .OnDelete(DeleteBehavior.Cascade);
 
@@ -98,6 +100,41 @@ namespace BSI.SportsLive.Models
                     .HasForeignKey(x => x.PlayerId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
+
+            // Configure TeamPlayer (Global Pool with history tracking)
+            builder.Entity<TeamPlayer>(entity =>
+            {
+                entity.HasKey(x => x.Id); // Ab surrogate key hai, composite nahi — rejoin allow karta hai
+
+                entity.HasOne(x => x.Team)
+                    .WithMany(t => t.TeamPlayers)
+                    .HasForeignKey(x => x.TeamId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(x => x.Player)
+                    .WithMany(p => p.TeamPlayers)
+                    .HasForeignKey(x => x.PlayerId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Match relationships (Tournament-linked OR standalone/friendly match)
+            builder.Entity<Match>()
+                .HasOne(m => m.Tournament)
+                .WithMany()
+                .HasForeignKey(m => m.TournamentId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Entity<Match>()
+                .HasOne(m => m.TeamA)
+                .WithMany()
+                .HasForeignKey(m => m.TeamAId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Match>()
+                .HasOne(m => m.TeamB)
+                .WithMany()
+                .HasForeignKey(m => m.TeamBId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

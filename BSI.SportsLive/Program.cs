@@ -5,6 +5,7 @@ using BSI.SportsLive.Mapping;
 using BSI.SportsLive.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,31 @@ builder.Services.AddCors(options =>
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
+});
+
+// Swagger with JWT Bearer support (Authorize button)
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "BSI.SportsLive",
+        Version = "v1"
+    });
+
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT token yahan paste karo (Bearer prefix ki zaroorat nahi)"
+    });
+
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = new List<string>()
+    });
 });
 
 // Add services to the container with a direct hardcoded connection string to eliminate any config mismatches
@@ -61,27 +87,23 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 500 * 1024; // 500 KB
+});
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate();
-}
-
-// Seed database and identity (safe: will no-op if data exists)
+// Seed database, roles, and default admin using the updated DbInitializer
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
         var db = services.GetRequiredService<AppDbContext>();
-        // Run initializer synchronously for startup
-        DbInitializer.InitializeAsync(db).GetAwaiter().GetResult();
-        // Seed Identity roles and default admin
-        IdentitySeeder.SeedAsync(services).GetAwaiter().GetResult();
+        // Pass both context and services provider so roles and admin can be seeded
+        DbInitializer.InitializeAsync(db, services).GetAwaiter().GetResult();
     }
     catch (Exception ex)
     {
@@ -97,7 +119,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();
+app.UseStaticFiles(); // wwwroot/uploads se images serve karne ke liye
 
 // Enable CORS Middleware (Must be placed before UseAuthorization and MapControllers)
 app.UseCors(MyAllowSpecificOrigins);

@@ -8,19 +8,35 @@ namespace BSI.SportsLive.Mapping
     {
         public MappingProfile()
         {
+            // Team mapping — sirf CURRENT players (LeftDate == null) dikhayein
             CreateMap<Team, TeamDto>()
-                .ForMember(dest => dest.Players, opt => opt.MapFrom(src => src.Players));
+                .ForMember(dest => dest.Players, opt => opt.MapFrom(src =>
+                    src.TeamPlayers.Where(tp => tp.LeftDate == null).Select(tp => tp.Player)));
             CreateMap<TeamCreateDto, Team>();
             CreateMap<TeamUpdateDto, Team>();
 
+            // Player mapping — Global player, current + past teams dono
             CreateMap<Player, PlayerDto>()
-                .ForMember(dest => dest.TeamName, opt => opt.MapFrom(src => src.Team != null ? src.Team.Name : string.Empty));
+                .ForMember(dest => dest.CurrentTeams, opt => opt.MapFrom(src =>
+                    src.TeamPlayers.Where(tp => tp.LeftDate == null).Select(tp => new TeamMembershipDto
+                    {
+                        TeamId = tp.TeamId,
+                        TeamName = tp.Team.Name,
+                        JoinedDate = tp.JoinedDate,
+                        LeftDate = tp.LeftDate
+                    })))
+                .ForMember(dest => dest.PastTeams, opt => opt.MapFrom(src =>
+                    src.TeamPlayers.Where(tp => tp.LeftDate != null).Select(tp => new TeamMembershipDto
+                    {
+                        TeamId = tp.TeamId,
+                        TeamName = tp.Team.Name,
+                        JoinedDate = tp.JoinedDate,
+                        LeftDate = tp.LeftDate
+                    })));
             CreateMap<PlayerCreateDto, Player>();
             CreateMap<PlayerUpdateDto, Player>();
 
-            CreateMap<Player, PlayerSummaryDto>()
-                .ForMember(dest => dest.BroadcastName, opt => opt.MapFrom(src => src.BroadcastName))
-                .ForMember(dest => dest.ShirtNumber, opt => opt.MapFrom(src => src.ShirtNumber));
+            CreateMap<Player, PlayerSummaryDto>();
 
             // Tournament mappings
             CreateMap<Tournament, TournamentDto>();

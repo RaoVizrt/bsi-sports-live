@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BSI.SportsLive")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+114a3276321b901d2605475118363c59b458c4c5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4bb375a9de3fa42aca7e597dbfe31aab06a63deb")]
 [assembly: System.Reflection.AssemblyProductAttribute("BSI.SportsLive")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BSI.SportsLive")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

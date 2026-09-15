@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Numerics;
+using System.Collections.Generic;
 
 namespace BSI.SportsLive.Models
 {
@@ -16,7 +16,7 @@ namespace BSI.SportsLive.Models
 
         public string SportType { get; set; } = "Cricket"; // Cricket, Football, etc.
 
-        // Navigation property for players belonging to this team
-        public ICollection<Player> Players { get; set; } = new List<Player>();
+        // Navigation property for Many-to-Many junction table
+        public ICollection<TeamPlayer> TeamPlayers { get; set; } = new List<TeamPlayer>();
     }
 }

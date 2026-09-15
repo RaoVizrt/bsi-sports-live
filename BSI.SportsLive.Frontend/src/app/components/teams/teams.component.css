@@ -1,0 +1,262 @@
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.team-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border: 1px solid #333;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+}
+
+.team-name {
+    font-weight: 600;
+    margin-right: 0.75rem;
+}
+
+.team-meta {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.team-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.empty-state {
+    color: #888;
+    padding: 1rem;
+}
+
+.error-text {
+    color: #f87171;
+    font-size: 0.85rem;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: #1e1e1e;
+    border-radius: 8px;
+    width: 420px;
+    max-width: 90vw;
+    padding: 1rem;
+}
+
+.modal-wide {
+    width: 520px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.modal-body label {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+.modal-body input,
+.modal-body select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    border-radius: 4px;
+    border: 1px solid #444;
+    background: #2a2a2a;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.player-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #333;
+}
+
+.player-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #333;
+}
+
+.player-name {
+    font-weight: 500;
+}
+
+.player-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.players-box {
+    text-align: center;
+    padding: 1.5rem;
+    border: 1px dashed #444;
+    border-radius: 6px;
+}
+
+.players-list.scrollable {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.muted {
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.badge {
+    background: #333;
+    color: #ccc;
+    font-size: 0.7rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    width: fit-content;
+    margin-top: 0.15rem;
+}
+
+.search-box {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 0.75rem;
+    border-radius: 4px;
+    border: 1px solid #444;
+    background: #2a2a2a;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.photo-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px dashed #444;
+    border-radius: 6px;
+}
+
+.photo-preview {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.photo-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #4f46e5;
+    color: #fff;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid #555;
+    color: #fff;
+}
+
+.btn-success {
+    background: #16a34a;
+    color: #fff;
+}
+
+.btn-success:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-success-sm {
+    background: #16a34a;
+    color: #fff;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-success-sm:disabled {
+    background: #444;
+    cursor: not-allowed;
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: #fff;
+}
+
+.btn-danger-sm {
+    background: #dc2626;
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-block {
+    width: 100%;
+    background: #333;
+    color: #fff;
+}

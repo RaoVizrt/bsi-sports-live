@@ -95,7 +95,9 @@ namespace BSI.SportsLive.Controllers
         [HttpGet("{teamId}/export/vmix")]
         public async Task<IActionResult> ExportForVmix(int matchId, int teamId)
         {
-            var match = await _db.Matches.FindAsync(matchId);
+            var match = await _db.Matches
+                .Include(m => m.Tournament)
+                .FirstOrDefaultAsync(m => m.Id == matchId);
             if (match == null) return NotFound("Match not found");
 
             var team = await _db.Teams.FindAsync(teamId);
@@ -116,7 +118,7 @@ namespace BSI.SportsLive.Controllers
                 match = new
                 {
                     id = match.Id,
-                    tournament = match.TournamentName,
+                    tournament = match.Tournament?.Name ?? "Friendly Match", // Nayi field ke hisaab se
                     date = match.MatchDate,
                     team = new { id = team.Id, name = team.Name }
                 },

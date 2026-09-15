@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace BSI.SportsLive.Models
 {
@@ -8,17 +8,16 @@ namespace BSI.SportsLive.Models
         public int Id { get; set; }
 
         [Required]
-        public string FullName { get; set; } = string.Empty; // Complete Name (can have 2, 3, or 4+ parts)
+        public string FullName { get; set; } = string.Empty;
 
         [Required]
-        public string BroadcastName { get; set; } = string.Empty; // Name for Graphics (e.g., Babar A.)
+        public string BroadcastName { get; set; } = string.Empty;
 
-        public string ShirtNumber { get; set; } = string.Empty; // Jersey Number
+        public string ShirtNumber { get; set; } = string.Empty;
 
-        // Foreign Key to Team
-        public int TeamId { get; set; }
+        public string? PhotoUrl { get; set; }
 
-        [ForeignKey("TeamId")]
-        public Team? Team { get; set; }
+        // Navigation property for Many-to-Many with Teams
+        public ICollection<TeamPlayer> TeamPlayers { get; set; } = new List<TeamPlayer>();
     }
 }

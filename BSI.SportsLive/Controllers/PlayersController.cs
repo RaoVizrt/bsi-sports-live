@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using BSI.SportsLive.Models;
 using BSI.SportsLive.DTOs;
 using AutoMapper;
 
 namespace BSI.SportsLive.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class PlayersController : ControllerBase
@@ -22,7 +24,10 @@ namespace BSI.SportsLive.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var players = await _db.Players.Include(p => p.Team).ToListAsync();
+            var players = await _db.Players
+                .Include(p => p.TeamPlayers)
+                .ThenInclude(tp => tp.Team)
+                .ToListAsync();
             var dto = _mapper.Map<IEnumerable<PlayerDto>>(players);
             return Ok(dto);
         }
@@ -30,7 +35,10 @@ namespace BSI.SportsLive.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var player = await _db.Players.Include(p => p.Team).FirstOrDefaultAsync(p => p.Id == id);
+            var player = await _db.Players
+                .Include(p => p.TeamPlayers)
+                .ThenInclude(tp => tp.Team)
+                .FirstOrDefaultAsync(p => p.Id == id);
             if (player == null) return NotFound();
             var dto = _mapper.Map<PlayerDto>(player);
             return Ok(dto);

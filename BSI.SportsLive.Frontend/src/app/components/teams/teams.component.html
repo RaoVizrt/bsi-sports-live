@@ -1,0 +1,151 @@
+<div class="teams-page">
+  <div class="page-header">
+    <h2>Teams</h2>
+    <button class="btn btn-primary" (click)="openCreateTeamModal()">+ Add Team</button>
+  </div>
+
+  <div *ngIf="isLoading">Loading teams...</div>
+  <div *ngIf="errorMessage" class="error-text">{{ errorMessage }}</div>
+
+  <div class="team-list">
+    <div class="team-row" *ngFor="let team of teams">
+      <div class="team-info">
+        <span class="team-name">{{ team.name }}</span>
+        <span class="team-meta">{{ team.shortName }} &middot; {{ team.sportType }} &middot; {{ team.players.length }} players</span>
+      </div>
+      <div class="team-actions">
+        <button class="btn btn-outline" (click)="openPlayersModal(team)">Manage Players</button>
+        <button class="btn btn-danger" (click)="deleteTeam(team)">Delete</button>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && teams.length === 0" class="empty-state">
+      No teams yet. Click "+ Add Team" to create one.
+    </div>
+  </div>
+</div>
+
+<!-- Create Team Modal -->
+<div class="modal-overlay" *ngIf="showTeamModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Add Team</h3>
+      <button class="close-btn" (click)="closeTeamModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <label>Team Name</label>
+      <input [(ngModel)]="newTeam.name" name="name" placeholder="e.g. Lahore Lions" />
+
+      <label>Short Name</label>
+      <input [(ngModel)]="newTeam.shortName" name="shortName" placeholder="e.g. LHL" />
+
+      <label>Sport</label>
+      <select [(ngModel)]="newTeam.sportType" name="sportType">
+        <option value="Cricket">Cricket</option>
+        <option value="Football">Football</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="closeTeamModal()">Cancel</button>
+      <button class="btn btn-success" (click)="createTeam()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Manage Players Modal -->
+<div class="modal-overlay" *ngIf="showPlayersModal && selectedTeam">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <h3>Update Players &mdash; {{ selectedTeam.name }}</h3>
+      <button class="close-btn" (click)="closePlayersModal()">&times;</button>
+    </div>
+
+    <!-- MODE: list -->
+    <div class="modal-body" *ngIf="playerModalMode === 'list'">
+      <div class="players-box" *ngIf="selectedTeam.players.length === 0">
+        <p><strong>No players in this team</strong></p>
+        <p class="muted">Use the buttons below to add players to this team</p>
+      </div>
+
+      <div class="players-list" *ngIf="selectedTeam.players.length > 0">
+        <div class="player-row" *ngFor="let p of selectedTeam.players">
+          <img class="player-avatar" [src]="p.photoUrl || 'https://placehold.co/40x40?text=?'" alt="" />
+          <span class="player-name">{{ p.broadcastName }}</span>
+          <span class="muted">#{{ p.shirtNumber }}</span>
+          <button class="btn btn-danger-sm" (click)="removePlayerFromTeam(p)">Remove</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODE: addExisting -->
+    <div class="modal-body" *ngIf="playerModalMode === 'addExisting'">
+      <input class="search-box" [(ngModel)]="playerSearchTerm" name="playerSearch" placeholder="Search players by name..." />
+
+      <div *ngIf="isSearchingPlayers">Loading players...</div>
+
+      <div class="players-list scrollable" *ngIf="!isSearchingPlayers">
+        <div class="player-row" *ngFor="let p of filteredPlayers">
+          <img class="player-avatar" [src]="p.photoUrl || 'https://placehold.co/40x40?text=?'" alt="" />
+          <div class="player-info">
+            <span class="player-name">{{ p.fullName }} ({{ p.broadcastName }})</span>
+            <span class="muted">#{{ p.shirtNumber || '-' }}</span>
+            <span class="badge" *ngIf="p.currentTeams.length > 0">
+              Currently: {{ p.currentTeams[0].teamName }}
+            </span>
+          </div>
+          <button
+            class="btn btn-success-sm"
+            [disabled]="isPlayerInCurrentTeam(p)"
+            (click)="addExistingPlayer(p)">
+            {{ isPlayerInCurrentTeam(p) ? 'Already Added' : 'Add' }}
+          </button>
+        </div>
+
+        <div *ngIf="filteredPlayers.length === 0" class="muted" style="padding: 1rem 0;">
+          No players found.
+        </div>
+      </div>
+    </div>
+
+    <!-- MODE: createNew -->
+    <div class="modal-body" *ngIf="playerModalMode === 'createNew'">
+      <div class="photo-upload">
+        <img *ngIf="photoPreviewUrl" [src]="photoPreviewUrl" class="photo-preview" alt="Preview" />
+        <div *ngIf="!photoPreviewUrl" class="photo-placeholder">No photo selected</div>
+        <input type="file" accept="image/jpeg,image/png" (change)="onPhotoSelected($event)" />
+        <span class="error-text" *ngIf="photoError">{{ photoError }}</span>
+        <span class="muted">Max size: 500 KB &middot; JPG or PNG only</span>
+      </div>
+
+      <label>Full Name</label>
+      <input [(ngModel)]="newPlayer.fullName" name="fullName" placeholder="e.g. Babar Azam" />
+
+      <label>Broadcast Name (optional)</label>
+      <input [(ngModel)]="newPlayer.broadcastName" name="broadcastName" placeholder="Auto-generated if empty" />
+
+      <label>Shirt Number (optional)</label>
+      <input [(ngModel)]="newPlayer.shirtNumber" name="shirtNumber" placeholder="e.g. 56" />
+    </div>
+
+    <!-- Footer changes based on mode -->
+    <div class="modal-footer" *ngIf="playerModalMode === 'list'">
+      <button class="btn btn-outline" (click)="openAddExistingMode()">Add Existing Player</button>
+      <button class="btn btn-outline" (click)="openCreateNewMode()">Create New Player</button>
+    </div>
+
+    <div class="modal-footer" *ngIf="playerModalMode === 'addExisting'">
+      <button class="btn btn-outline" (click)="playerModalMode = 'list'">Back</button>
+    </div>
+
+    <div class="modal-footer" *ngIf="playerModalMode === 'createNew'">
+      <button class="btn btn-outline" (click)="playerModalMode = 'list'">Cancel</button>
+      <button class="btn btn-success" [disabled]="isUploadingPhoto" (click)="createNewPlayer()">
+        {{ isUploadingPhoto ? 'Uploading...' : 'Create & Add' }}
+      </button>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-block" (click)="closePlayersModal()">Close</button>
+    </div>
+  </div>
+</div>

@@ -4,6 +4,7 @@ using BSI.SportsLive.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BSI.SportsLive.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260915071434_AddGlobalPlayerPool")]
+    partial class AddGlobalPlayerPool
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,9 +42,6 @@ namespace BSI.SportsLive.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -113,26 +113,19 @@ namespace BSI.SportsLive.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TeamAId")
-                        .HasColumnType("int");
+                    b.Property<string>("TeamA")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TeamBId")
-                        .HasColumnType("int");
+                    b.Property<string>("TeamB")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TournamentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("TournamentName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TeamAId");
-
-                    b.HasIndex("TeamBId");
-
-                    b.HasIndex("TournamentId");
 
                     b.ToTable("Matches");
                 });
@@ -276,29 +269,15 @@ namespace BSI.SportsLive.Migrations
 
             modelBuilder.Entity("BSI.SportsLive.Models.TeamPlayer", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("TeamId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("JoinedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("LeftDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("TeamId", "PlayerId");
 
                     b.HasIndex("PlayerId");
-
-                    b.HasIndex("TeamId");
 
                     b.ToTable("TeamPlayers");
                 });
@@ -546,32 +525,6 @@ namespace BSI.SportsLive.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("BSI.SportsLive.Models.Match", b =>
-                {
-                    b.HasOne("BSI.SportsLive.Models.Team", "TeamA")
-                        .WithMany()
-                        .HasForeignKey("TeamAId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BSI.SportsLive.Models.Team", "TeamB")
-                        .WithMany()
-                        .HasForeignKey("TeamBId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BSI.SportsLive.Models.Tournament", "Tournament")
-                        .WithMany()
-                        .HasForeignKey("TournamentId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("TeamA");
-
-                    b.Navigation("TeamB");
-
-                    b.Navigation("Tournament");
                 });
 
             modelBuilder.Entity("BSI.SportsLive.Models.MatchPlayingXI", b =>
